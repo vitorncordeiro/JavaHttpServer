@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
@@ -11,6 +12,7 @@ public class HttpServer {
     private final int port;
     private final ExecutorService pool;
     static AtomicInteger totalRequisitions = new AtomicInteger(0);
+    private static final String PUBLIC_PACKAGE_PATH = "code/src/main/java/public/" ;
 
     public HttpServer(int port, int threads){
         this.port = port;
@@ -37,35 +39,14 @@ public class HttpServer {
             HttpResponse response = new HttpResponse(socket.getOutputStream());
 
             HttpRequest request = HttpRequest.parse(reader);
-            System.out.println(request.path);
-            switch(request.path){
+            System.out.println(request.getPath());
+            switch(request.getPath()){
                 case "/", "/index.html"-> response.sendText(200,
-                        """
-                        <html>
-                        <body>
-                        <h1>My HTTP server</h1>
-                        <p>working!</p>
-                        </body>
-                        </html>
-                        """);
+                        new File( PUBLIC_PACKAGE_PATH + "index.html"));
                 case "/about" -> response.sendText(200,
-                        """
-                        <html>
-                        <body>
-                        <h1>My HTTP server was built with java core</h1>
-                        <p>And it was realy hard!</p>
-                        </body>
-                        </html>
-                        """);
+                         new File( PUBLIC_PACKAGE_PATH+ "about.html"));
                 default -> response.sendText(404,
-                        """
-                         <html>
-                         <body>
-                         <h1 style="font-size: 50px">404</h1>
-                         <p>Page not founded</p>
-                         </body>
-                         </html>
-                         """);
+                        new File( PUBLIC_PACKAGE_PATH + "404.html"));
 
             }
 

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>404 - Not Found</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #00ff00;
+            font-family: "Courier New", monospace;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .terminal {
+            border: 2px solid #00ff00;
+            padding: 40px;
+            width: 600px;
+            background: rgba(0, 255, 0, 0.05);
+            box-shadow: 0 0 20px #00ff00;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        .line {
+            margin: 10px 0;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            background-color: #00ff00;
+            margin-left: 5px;
+            animation: blink 1s infinite;
+        }
+
+        a {
+            color: #00ff00;
+            text-decoration: underline;
+        }
+
+        a:hover {
+            color: #66ff66;
+        }
+
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="terminal">
+    <h1>ERROR 404</h1>
+
+    <div id="output"></div>
+    <div class="cursor"></div>
+
+    <div class="line" style="margin-top:20px;">
+        > <a href="/">Return to home</a>
+    </div>
+</div>
+
+<script>
+    const lines = [
+        "Requesting resource...",
+        "Error: Resource not found",
+        "Status Code: 404",
+        "Suggestion: Check the URL or return to homepage"
+    ];
+
+    const output = document.getElementById("output");
+    let lineIndex = 0;
+    let charIndex = 0;
+
+    function typeLine() {
+        if (lineIndex >= lines.length) return;
+
+        let currentLine = lines[lineIndex];
+
+        if (charIndex < currentLine.length) {
+            if (!output.lastChild) {
+                const div = document.createElement("div");
+                div.className = "line";
+                output.appendChild(div);
+            }
+
+            output.lastChild.textContent += currentLine[charIndex++];
+            setTimeout(typeLine, 40);
+        } else {
+            lineIndex++;
+            charIndex = 0;
+
+            const newLine = document.createElement("div");
+            newLine.className = "line";
+            output.appendChild(newLine);
+
+            setTimeout(typeLine, 300);
+        }
+    }
+
+    typeLine();
+</script>
+
+</body>
+</html>

@@ -6,14 +6,21 @@ import java.util.Map;
 
 public class HttpRequest {
     private final String method;
-    final String path;
+    private final String path;
     private final Map<String, String> headers;
+    private final String body;
 
-    public HttpRequest(String method, String path, Map<String, String> headers){
+    public HttpRequest(String method, String path, Map<String, String> headers, String body){
         this.method = method;
         this.path = path;
         this.headers = headers;
+        this.body = body;
     }
+
+    public String getPath(){
+        return path;
+    }
+
 
     public static HttpRequest parse(BufferedReader reader) throws IOException {
         String[] parts = reader.readLine().split(" ");
@@ -23,9 +30,17 @@ public class HttpRequest {
         Map<String, String> headers = new HashMap<>();
         while(!(headerLine = reader.readLine()).isEmpty()){
             String[] kv = headerLine.split(":", 2);
-            headers.put(kv[0], kv[1]);
+            headers.put(kv[0].trim(), kv[1].trim());
+            System.out.println(headerLine);
         }
 
-        return new HttpRequest(method, path, headers);
+        String body = "";
+        if(headers.containsKey("Content-Length")) {
+            int length = Integer.parseInt(headers.get("Content-Length"));
+            char[] buffer = new char[length];
+            reader.read(buffer, 0, length);
+            body = new String(buffer);
+        }
+        return new HttpRequest(method, path, headers, body);
     }
 }

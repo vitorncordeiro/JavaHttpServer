@@ -1,6 +1,7 @@
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class HttpResponse{
     private OutputStream output;
@@ -21,8 +22,8 @@ public class HttpResponse{
         output.write(body);
         output.flush();
     }
-    public void sendText(int status, String html) throws IOException{
-        send(status, "text/html; charset=utf-8", html.getBytes(StandardCharsets.UTF_8));
+    public void sendText(int status, File html) throws IOException{
+        send(status, "text/html; charset=utf-8", Files.readAllBytes(html.toPath()));
     }
 
     public String statusText(int statusCode){

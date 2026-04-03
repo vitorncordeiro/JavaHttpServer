@@ -1,4 +1,4 @@
-# Jitor - Micro Java WebFramework
+# Jitor - Java WebServer
 
 ## Overview
 

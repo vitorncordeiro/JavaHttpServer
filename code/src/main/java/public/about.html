@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Retro Terminal</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #00ff00;
+            font-family: "Courier New", monospace;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .terminal {
+            border: 2px solid #00ff00;
+            padding: 40px;
+            text-align: center;
+            background: rgba(0, 255, 0, 0.05);
+            box-shadow: 0 0 20px #00ff00;
+        }
+
+        #text {
+            font-size: 28px;
+            white-space: nowrap;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            background-color: #00ff00;
+            margin-left: 5px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="terminal">
+    <div id="text"></div><div class="cursor"></div>
+</div>
+
+<script>
+    const textElement = document.getElementById("text");
+    const message = "Hello World...";
+    let index = 0;
+    let deleting = false;
+
+    function typeLoop() {
+        if (!deleting) {
+            textElement.textContent = message.substring(0, index++);
+
+            if (index > message.length) {
+                deleting = true;
+                setTimeout(typeLoop, 2000); // wait 2s before deleting
+                return;
+            }
+        } else {
+            textElement.textContent = message.substring(0, index--);
+
+            if (index < 0) {
+                deleting = false;
+            }
+        }
+
+        setTimeout(typeLoop, deleting ? 50 : 100);
+    }
+
+    typeLoop();
+</script>
+
+</body>
+</html>
