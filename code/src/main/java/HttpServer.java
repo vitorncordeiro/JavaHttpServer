@@ -43,8 +43,6 @@ public class HttpServer {
             switch(request.getPath()){
                 case "/", "/index.html"-> response.sendText(200,
                         new File( PUBLIC_PACKAGE_PATH + "index.html"));
-                case "/about" -> response.sendText(200,
-                         new File( PUBLIC_PACKAGE_PATH+ "about.html"));
                 default -> response.sendText(404,
                         new File( PUBLIC_PACKAGE_PATH + "404.html"));
 
